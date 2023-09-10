@@ -41,8 +41,8 @@ body {
 
 video {
     max-width: calc(100% - 50px);
-    /* aspect-ratio: 1; */
-    /* object-fit: cover; */
+    aspect-ratio: 1;
+    object-fit: cover;
     max-height: calc(100% - 50px);
 }
 
