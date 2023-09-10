@@ -24,6 +24,7 @@ body {
     display: flex !important;
     align-items: center;
     justify-content: center;
+    overflow: hidden;
 }
 
 #canvas {
@@ -42,6 +43,7 @@ video {
     max-width: calc(100% - 50px);
     /* aspect-ratio: 1; */
     /* object-fit: cover; */
+    max-height: calc(100% - 50px);
 }
 
 .capture-controls {
