@@ -137,6 +137,32 @@ retakeButton.addEventListener('click', () => {
 });
 
 // Share button (add your sharing logic here)
+shareButton.addEventListener('click', () => {
+    canvas.toBlob(async function (blob) {
+        // Create a File object
+        const file = new File([blob], 'image.png', { type: blob.type });
+
+        // Check if the 'share' API is available in the browser
+        if (navigator.share) {
+            try {
+                // Define the data to be shared
+                const shareData = {
+                    text: 'Some text',
+                    title: 'Some title',
+                    files: [file],
+                };
+
+                // Use the 'share' API to trigger the share dialog
+                await navigator.share(shareData);
+            } catch (error) {
+                console.error('Error sharing:', error);
+            }
+        } else {
+            // Sharing not supported in this browser
+            console.warn('Sharing not supported');
+        }
+    });
+});
 
 // Download button
 downloadButton.addEventListener('click', () => {
