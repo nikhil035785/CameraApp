@@ -16,7 +16,8 @@ let imageFlipped = false;
 let imageHieght = "1200";
 let imageWidth = "1200";
 
-function getImageDetails(cameraFeeds) {
+function getImageDetails(cameraFeed) {
+    console.log(cameraFeed.toString());
     let renderImageWidth = imageWidth - 100;
     let renderImageHeight = (renderImageWidth*cameraFeed.videoHeight)/cameraFeed.videoWidth;
     let SpaceFromTop = (imageHieght - renderImageHeight)/2;
@@ -31,6 +32,9 @@ async function initializeCamera() {
     try {
         const stream = await navigator.mediaDevices?.getUserMedia({ video: { facingMode: isFrontCamera ? 'user' : 'environment' } });
         cameraFeed.srcObject = stream;
+        cameraFeed.onloadedmetadata = function(e) {
+            cameraFeed.play();
+         };
     } catch (error) {
         console.error('Error accessing camera:', error);
     }
