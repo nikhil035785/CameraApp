@@ -68,7 +68,8 @@ captureButton.addEventListener('click', () => {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         drawBackgroundImage();
         // ctx.scale(-1, 1);
-        ctx.drawImage(video, 50, SpaceFromTop, renderImageWidth, renderImageHeight);
+        // ctx.drawImage(video, 50, SpaceFromTop, renderImageWidth, renderImageHeight);
+        ctx.drawImage(video, 50, 50, renderImageWidth, imageHieght - 100);
         canvas.style.display = 'block';
 
         captureButton.classList.remove('alignBtnTextIcon');
