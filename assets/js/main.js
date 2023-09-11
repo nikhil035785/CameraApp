@@ -9,7 +9,7 @@ const shareButton = document.getElementById('share');
 const downloadButton = document.getElementById('download');
 const canvas = document.getElementById('canvas');
 
-let isFrontCamera = false;
+let isFrontCamera = true;
 let imageFlipped = false;
 
 
@@ -43,15 +43,6 @@ async function initializeCamera() {
         cameraFeed.onloadedmetadata = function(e) {
             cameraFeed.play();
          };
-
-        // navigator.mediaDevices.getUserMedia({ video: { facingMode: isFrontCamera ? 'user' : 'environment' } })
-        //     .then(function (stream) {
-        //         // Assign the camera stream to the image's srcObject
-        //         cameraFeed.srcObject = stream;
-        //     })
-        //     .catch(function (error) {
-        //         console.error('Error accessing the camera: ', error);
-        //     });
     } catch (error) {
         console.error('Error accessing camera:', error);
     }
