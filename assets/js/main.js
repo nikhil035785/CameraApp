@@ -30,9 +30,15 @@ backgroundImage.src = './assets/img/dd.jpg';
 // Function to initialize the camera feed
 async function initializeCamera() {
     try {
+        console.log(cameraFeed);
+        if(cameraFeed.srcObject !== null && cameraFeed.srcObject.getTracks().length > 0) {
+            cameraFeed.srcObject.getTracks().forEach((track) => {
+                track.stop()
+            })
+        }
         const stream = await navigator.mediaDevices?.getUserMedia({ video: { facingMode: isFrontCamera ? 'user' : 'environment' } });
         cameraFeed.srcObject = stream;
-        // console.log(stream);
+        console.log(stream, navigator.mediaDevices);
         
         cameraFeed.onloadedmetadata = function(e) {
             cameraFeed.play();
