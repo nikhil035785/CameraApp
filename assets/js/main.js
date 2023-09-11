@@ -9,7 +9,7 @@ const shareButton = document.getElementById('share');
 const downloadButton = document.getElementById('download');
 const canvas = document.getElementById('canvas');
 
-let isFrontCamera = true;
+let isFrontCamera = false;
 let imageFlipped = false;
 
 
