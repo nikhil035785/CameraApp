@@ -25,7 +25,7 @@ function getImageDetails(cameraFeed) {
 }
 
 let backgroundImage = new Image(); // Create an image object for the background image
-backgroundImage.src = './assets/img/Frame.png';
+backgroundImage.src = './assets/img/Photo_Filter.png';
 
 // Function to initialize the camera feed
 async function initializeCamera() {
@@ -147,8 +147,8 @@ shareButton.addEventListener('click', () => {
             try {
                 // Define the data to be shared
                 const shareData = {
-                    text: 'Some text',
-                    title: 'Some title',
+                    text: 'Rashi Paripherals at Electonica Expo 2023',
+                    title: 'Rashi Paripherals at Electonica Expo 2023',
                     files: [file],
                 };
 
