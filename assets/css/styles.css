@@ -18,17 +18,24 @@ body {
 .camera-preview {
     position: relative;
     width: 100%;
-    aspect-ratio: 1;
-    background-image: url('../img/dd.jpg');
-    background-size: contain;
+    height: 100%;
+    /* aspect-ratio: 1; */
+    /* background-image: url('../img/dd.jpg');
+    background-size: contain; */
     display: flex !important;
     align-items: center;
     justify-content: center;
-    overflow: hidden;
+    /* overflow: hidden; */
 }
 
 #canvas {
     width: 100%;
+}
+
+#wrapCamera {
+    width: 100%;
+    aspect-ratio: 1;
+    /* height: 100%; */
 }
 .photoFrmae {
     position: absolute;
@@ -36,14 +43,14 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    display: none;
+    /* display: none; */
 }
 
 video {
-    max-width: calc(100% - 50px);
-    aspect-ratio: 1;
+    max-width: calc(100%);
+    /* aspect-ratio: 1;
     object-fit: cover;
-    max-height: calc(100% - 50px);
+    max-height: calc(100% - 50px); */
 }
 
 .capture-controls {

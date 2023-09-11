@@ -18,14 +18,14 @@ let imageWidth = "1200";
 
 function getImageDetails(cameraFeed) {
     console.log(cameraFeed.controller);
-    let renderImageWidth = imageWidth - 100;
+    let renderImageWidth = imageWidth;
     let renderImageHeight = (renderImageWidth*cameraFeed.videoHeight)/cameraFeed.videoWidth;
     let SpaceFromTop = (imageHieght - renderImageHeight)/2;
     return { renderImageWidth, renderImageHeight, SpaceFromTop };
 }
 
 let backgroundImage = new Image(); // Create an image object for the background image
-backgroundImage.src = './assets/img/dd.jpg';
+backgroundImage.src = './assets/img/Frame1.png';
 
 // Function to initialize the camera feed
 async function initializeCamera() {
@@ -82,15 +82,15 @@ captureButton.addEventListener('click', () => {
         canvas.width = imageWidth;
         canvas.height = imageHieght;
         const { renderImageWidth, renderImageHeight, SpaceFromTop } = getImageDetails(video);
-        // console.log(video, renderImageHeight, renderImageWidth);
+        console.log(renderImageHeight, renderImageWidth, SpaceFromTop);
         
         
         const ctx = canvas.getContext('2d');
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        drawBackgroundImage();
         // ctx.scale(-1, 1);
-        // ctx.drawImage(video, 50, SpaceFromTop, renderImageWidth, renderImageHeight);
-        ctx.drawImage(video, 50, 50, renderImageWidth, imageHieght - 100);
+        ctx.drawImage(video, 0, SpaceFromTop, renderImageWidth, renderImageHeight);
+        // ctx.drawImage(video, 0, 0, renderImageWidth, imageHieght);
+        drawBackgroundImage();
         canvas.style.display = 'block';
 
         captureButton.classList.remove('alignBtnTextIcon');
