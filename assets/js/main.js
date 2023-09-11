@@ -25,7 +25,7 @@ function getImageDetails(cameraFeed) {
 }
 
 let backgroundImage = new Image(); // Create an image object for the background image
-backgroundImage.src = './assets/img/Frame1.png';
+backgroundImage.src = './assets/img/Frame.png';
 
 // Function to initialize the camera feed
 async function initializeCamera() {
