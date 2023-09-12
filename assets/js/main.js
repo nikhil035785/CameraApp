@@ -27,6 +27,30 @@ function getImageDetails(cameraFeed) {
 let backgroundImage = new Image(); // Create an image object for the background image
 backgroundImage.src = './assets/img/Photo_Filter.png';
 
+
+function getOS() {
+    var userAgent = window.navigator.userAgent,
+        platform = window.navigator?.userAgentData?.platform || window.navigator.platform,
+        macosPlatforms = ['Macintosh', 'MacIntel', 'MacPPC', 'Mac68K'],
+        windowsPlatforms = ['Win32', 'Win64', 'Windows', 'WinCE'],
+        iosPlatforms = ['iPhone', 'iPad', 'iPod'],
+        os = null;
+
+    if (macosPlatforms.indexOf(platform) !== -1) {
+        os = 'Mac OS';
+    } else if (iosPlatforms.indexOf(platform) !== -1) {
+        os = 'iOS';
+    } else if (windowsPlatforms.indexOf(platform) !== -1) {
+        os = 'Windows';
+    } else if (/Android/.test(userAgent)) {
+        os = 'Android';
+    } else if (/Linux/.test(platform)) {
+        os = 'Linux';
+    }
+
+    return os;
+}
+
 // Function to initialize the camera feed
 async function initializeCamera() {
     try {
@@ -91,6 +115,8 @@ captureButton.addEventListener('click', () => {
     shareButton.classList.add('alignBtnTextIcon');
     downloadButton.classList.add('alignBtnTextIcon');
 
+    document.getElementById('OSTitle').innerText = getOS();
+
     setTimeout(() => {
         const tracks = video.srcObject.getTracks();
         tracks.forEach(track => track.stop())
@@ -136,28 +162,6 @@ retakeButton.addEventListener('click', () => {
     initializeCamera();
 });
 
-function getOS() {
-    var userAgent = window.navigator.userAgent,
-        platform = window.navigator?.userAgentData?.platform || window.navigator.platform,
-        macosPlatforms = ['Macintosh', 'MacIntel', 'MacPPC', 'Mac68K'],
-        windowsPlatforms = ['Win32', 'Win64', 'Windows', 'WinCE'],
-        iosPlatforms = ['iPhone', 'iPad', 'iPod'],
-        os = null;
-
-    if (macosPlatforms.indexOf(platform) !== -1) {
-        os = 'Mac OS';
-    } else if (iosPlatforms.indexOf(platform) !== -1) {
-        os = 'iOS';
-    } else if (windowsPlatforms.indexOf(platform) !== -1) {
-        os = 'Windows';
-    } else if (/Android/.test(userAgent)) {
-        os = 'Android';
-    } else if (/Linux/.test(platform)) {
-        os = 'Linux';
-    }
-
-    return os;
-}
 
 // Share button (add your sharing logic here)
 shareButton.addEventListener('click', () => {
