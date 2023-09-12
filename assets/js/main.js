@@ -147,9 +147,9 @@ shareButton.addEventListener('click', () => {
             try {
                 // Define the data to be shared
                 const shareData = {
-                    text: 'Rashi Peripherals at Electronica Expo 2023',
-                    title: 'Rashi Peripherals at Electronica Expo 2023',
-                    files: [file],
+                    // text: 'Rashi Peripherals at Electronica Expo 2023',
+                    // title: 'Rashi Peripherals at Electronica Expo 2023',
+                    files: [file]
                 };
 
                 // Use the 'share' API to trigger the share dialog
