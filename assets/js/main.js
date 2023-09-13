@@ -8,6 +8,11 @@ const retakeButton = document.getElementById('retake');
 const shareButton = document.getElementById('share');
 const downloadButton = document.getElementById('download');
 const canvas = document.getElementById('canvas');
+const spinnerWrapper = document.getElementById('spinnerWrapper');
+const CopyAddon = document.getElementById('CopyAddon');
+const CopyText = document.getElementById('CopyText');
+
+const shareTextDiv = document.getElementById('shareTextDiv');
 
 let isFrontCamera = true;
 let imageFlipped = false;
@@ -83,10 +88,10 @@ function drawBackgroundImage() {
     ctx.drawImage(backgroundImage, 0, 0, imageWidth, imageHieght);
 }
 
-
 // Capture an image
 captureButton.addEventListener('click', () => {
     const video = cameraFeed;
+    spinnerWrapper.style.display = 'flex';
 
     // video.addEventListener('canplay', () => {
     // Stop the video feed and release the camera
@@ -99,7 +104,6 @@ captureButton.addEventListener('click', () => {
     const { renderImageWidth, renderImageHeight, SpaceFromTop } = getImageDetails(video);
     console.log(renderImageHeight, renderImageWidth, SpaceFromTop);
 
-
     const ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     // ctx.scale(-1, 1);
@@ -108,24 +112,97 @@ captureButton.addEventListener('click', () => {
     drawBackgroundImage();
     canvas.style.display = 'block';
 
-    captureButton.classList.remove('alignBtnTextIcon');
-    toggleCameraButton.classList.remove('alignBtnTextIcon');
-    flipImageButton.classList.add('alignBtnTextIcon');
-    retakeButton.classList.add('alignBtnTextIcon');
-    shareButton.classList.add('alignBtnTextIcon');
-    downloadButton.classList.add('alignBtnTextIcon');
+    canvas.toBlob(async function (blob) {
+        const file = new File([blob], 'image.png', { type: blob.type });
+        const formData = new FormData();
+        formData.append('inputFile', file);
+        // console.log(spinnerWrapper);
 
-    document.getElementById('OSTitle').innerText = getOS();
+        // Define the URL you want to send the POST request to
+        const url = 'https://api.webweb.ai/ai/uploadImageToS3/RPTECH-2023-09-12';
+
+        // Create the request options, including the method and body
+        const requestOptions = {
+            method: 'POST',
+            body: formData // Use the FormData object as the request body
+        };
+
+        // Send the POST request using fetch
+        fetch(url, requestOptions)
+            .then(data => {
+                console.log(data);
+                if (!data.ok) {
+                throw new Error('Network response was not ok');
+                }
+                return data.json(); // Parse the response as JSON
+            })
+            .then(response => {
+                console.log(response)
+                if (response.message == "Success") {
+                    // response = JSON.parse(response);
+
+                    captureButton.classList.remove('alignBtnTextIcon');
+                    toggleCameraButton.classList.remove('alignBtnTextIcon');
+                    flipImageButton.classList.add('alignBtnTextIcon');
+                    retakeButton.classList.add('alignBtnTextIcon');
+                    shareButton.classList.add('alignBtnTextIcon');
+                    downloadButton.classList.add('alignBtnTextIcon');
+                    shareTextDiv.style.display = 'block';
+
+                } else {
+                    console.error('Error saving photo:', response.error);
+                    $('#liveToast').toast('show');
+                }
+                spinnerWrapper.style.display = 'none';
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+                $('#liveToast').toast('show');
+            });
+
+        // $.ajax({
+        //     url: 'https://api.webweb.ai/ai/uploadImageToS3/RPTECH-2023-09-12',
+        //     type: 'POST',
+        //     data: formData,
+        //     processData: false,
+        //     contentType: false,
+        //     success: function (response) {
+        //         console.log(response);
+
+        //         // Handle the response from the server
+        //         if (response.message == "Success") {
+        //             // response = JSON.parse(response);
+
+        //             captureButton.classList.remove('alignBtnTextIcon');
+        //             toggleCameraButton.classList.remove('alignBtnTextIcon');
+        //             flipImageButton.classList.add('alignBtnTextIcon');
+        //             retakeButton.classList.add('alignBtnTextIcon');
+        //             shareButton.classList.add('alignBtnTextIcon');
+        //             downloadButton.classList.add('alignBtnTextIcon');
+
+        //         } else {
+        //             console.error('Error saving photo:', response.error);
+        //             $('#liveToast').toast('show');
+        //         }
+        //         spinnerWrapper.style.display = 'none';
+        //     },
+        //     error: function (xhr, status, error) {
+        //         console.error('Error saving photo:', error);
+        //         $('#liveToast').toast('show');
+        //         spinnerWrapper.style.display = 'none';
+        //     }
+        // });
+    })
+
+
+
+    // document.getElementById('OSTitle').innerText = getOS();
 
     setTimeout(() => {
         const tracks = video.srcObject.getTracks();
         tracks.forEach(track => track.stop())
     }, 1000);
     // });
-
-    // if (video.readyState >= 3) {
-    //     video.dispatchEvent(new Event('canplay'));
-    // }
 });
 
 // Flip the captured image
@@ -158,6 +235,7 @@ retakeButton.addEventListener('click', () => {
     retakeButton.classList.remove('alignBtnTextIcon');
     shareButton.classList.remove('alignBtnTextIcon');
     downloadButton.classList.remove('alignBtnTextIcon');
+    shareTextDiv.style.display = 'none';
     canvas.style.display = 'none';
     initializeCamera();
 });
@@ -174,13 +252,13 @@ shareButton.addEventListener('click', () => {
             try {
                 // Define the data to be shared
                 let shareData = {
-                    text: 'Rashi Peripherals at Electronica Expo 2023',
-                    title: 'Rashi Peripherals at Electronica Expo 2023',
+                    title: "Rashi Peripherals at Electronica Expo 2023",
+                    text: "Rashi Peripherals at Electronica Expo 2023",
                     files: [file]
                 };
                 console.log(getOS());
 
-                if(getOS() === 'Mac OS' || getOS() === 'iOS') {
+                if (getOS() === 'Mac OS' || getOS() === 'iOS') {
                     console.log(getOS());
                     shareData = {
                         files: [file]
@@ -209,3 +287,21 @@ downloadButton.addEventListener('click', () => {
 
 // Initialize the camera
 initializeCamera();
+
+// Add a click event listener to the copy button
+function CopyFunct() {
+    // Select the text in the input field
+    CopyText.select();
+
+    // Copy the selected text to the clipboard
+    document.execCommand('copy');
+
+    // Deselect the text to avoid visual confusion
+    CopyText.blur();
+
+    // Optionally, provide user feedback
+    // alert('Text copied to clipboard');
+    $('#liveToast2').toast('show');
+}
+CopyAddon.addEventListener('click', () => CopyFunct());
+CopyText.addEventListener('click', () => CopyFunct());
